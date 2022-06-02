@@ -1,0 +1,218 @@
+<head th:replace="head.html"></head>
+
+<section class="resume-section" id="post">
+
+    <div class="resume-section-content" id="post_container">
+        <h2 class="mb-5">Post Detail View</h2>
+        <div class="d-flex flex-column flex-md-row justify-content-between mb-5 post ">
+            <div class="flex-grow-1">
+                <h3 class="mb-0 title"></h3>
+                <div class="subheading mb-3 name"></div>
+                <p class="message"></p>
+            </div>
+            <div class="flex-shrink-0">
+                <p class="time"></p>
+                <button class="btn btn-outline-primary text-uppercase mb-1 btnuser" style="display: none" th:onclick="'window.location=\'/edit/'+${postId}+'\''" type="button" >Edit</button>
+
+                <button class="btn btn-outline-primary text-uppercase mb-1 btnuser" style="display: none" onclick="deletePost()" type="button" >Delete</button>
+
+            </div>
+        </div>
+        <hr class="m-0" />
+<!--        <th:block th:if="${userId != null}">-->
+            <div class="d-flex flex-column flex-md-row justify-content-around mb-5">
+                <div class="col-md-9 p-2">
+                    <div class="form-group mb-2">
+                        <!-- Email address input-->
+                        <input class="form-control w-100 p-3" id="comment" type="text" placeholder="Title *" data-sb-validations="required,title" data-sb-can-submit="no">
+                    </div>
+                </div>
+                <div class="col-md-3 subheading mb-3 text-center"><button class="btn btn-outline-primary text-uppercase m-3" onclick="addComment()" type="button" >Add Comment</button></div>
+            </div>
+<!--        </th:block>-->
+
+        <div id="commentContainer">
+        </div>
+    </div>
+</section>
+<hr class="m-0" />
+
+<div th:replace="bottom.html"></div>
+
+<script th:inline="javascript">
+    function addComment() {
+        if ($("#comment").val() == "") {
+            alert("내용을 입력해 주세요");
+            return;
+        }
+        var data = {
+            "message" : $("#comment").val(),
+            "post" : {
+                "id":[[${postId}]]
+            }
+        };
+        $.ajax({
+            type: "Post",
+            url: "/comment",
+            contentType: "application/json", // JSON 형식으로 전달함을 알리기
+            data: JSON.stringify(data),
+            success: function (response) {
+                if(response.status == "success"){
+                    alert('댓글이 성공적으로 작성되었습니다.');
+                    window.location.reload();
+                }else if (response.status == "fail") {
+                    alert(response.message);
+                }
+            },
+            error: function (response) {
+            }
+        });
+    }
+
+
+    // 메모를 삭제합니다.
+    function deletePost() {
+        if (confirm("삭제 하시겠습니까?")) {
+            $.ajax({
+                type: "DELETE",
+                url: "/post/"+[[${postId}]],
+                contentType: "application/json", // JSON 형식으로 전달함을 알리기
+                data: {},
+                success: function (response) {
+                    if(response.status == "success"){
+                        alert('메시지가 성공적으로 삭제되었습니다.');
+                        window.location="/";
+                    }else if (response.status == "fail") {
+                        alert(response.message);
+                    }
+                },
+                error: function (response) {
+                }
+            });
+        }
+
+    }
+    $(document).ready(function (){
+        $.ajax({
+            type: "GET",
+            url: "/post/"+[[${postId}]],
+            contentType: "application/json", // JSON 형식으로 전달함을 알리기
+            data: {},
+            success: function (response) {
+                var date = new Date(response['createdAt']);
+                var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1);
+                var day = date.getDay() < 10 ? "0" + date.getDay() : date.getDay();
+                var hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+                var minute = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+
+                $(".title").html(response.title);
+                $(".name").html(response.user.username);
+                $(".message").html(response.message);
+                $(".time").html(month+"/"+day+" "+hour+":"+minute);
+                console.log(response);
+                if ([[${userId}]] == response.user.id) {
+                    $(".btnuser").show();
+                }
+
+                for (let comment of response.comment) {
+                    addCommentHtml(comment);
+                }
+            },
+            error: function (response) {
+            }
+        });
+    })
+
+    function openEditComment(commentId) {
+        $("#comment"+commentId).toggle();
+        $("#commentOpenBtn"+commentId).toggle();
+        $("#commentinput"+commentId).toggle();
+        $("#commentBtn"+commentId).toggle();
+        $("#commentCancelBtn"+commentId).toggle();
+        $("#commentDeleteBtn"+commentId).toggle();
+    }
+
+    function addCommentHtml(comment){
+        var date = new Date(comment['createdAt']);
+        var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1);
+        var day = date.getDay() < 10 ? "0" + date.getDay() : date.getDay();
+        var hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+        var minute = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+
+        var tempHtml = `
+            <div class="d-flex flex-column flex-md-row justify-content-between mb-5 post ">
+                <div class="flex-grow-1">
+                    <div class="subheading mb-3">${comment.user.username}</div>
+                    <p id="comment${comment.id}">${comment.message}</p>
+                    <p style="display: none" id="commentinput${comment.id}"><input type="text" value="${comment.message}"></p>
+                </div>
+                <div class="flex-shrink-0">
+                    <p class="time">${month}/${day} ${hour}:${minute}</p>
+                `;
+        if(comment.user.id == [[${userId}]]) {
+            tempHtml = tempHtml + `
+
+                    <button class="btn btn-sm btn-outline-primary text-uppercase mb-1 "  type="button" id="commentOpenBtn${comment.id}" onclick="openEditComment(${comment.id})" >Edit</button>
+                    <button class="btn btn-sm btn-outline-primary text-uppercase mb-1 "  type="button" style="display: none" id="commentBtn${comment.id}" onclick="editComment(${comment.id})" >Edit</button>
+
+                    <button class="btn btn-sm btn-outline-primary text-uppercase mb-1 "  onclick="deleteComment(${comment.id})" type="button" id="commentDeleteBtn${comment.id}">Delete</button>
+                    <button class="btn btn-sm btn-outline-primary text-uppercase mb-1 "  onclick="openEditComment(${comment.id})" type="button" style="display: none" id="commentCancelBtn${comment.id}"  >Cancel</button>
+                    `;
+        }
+
+        tempHtml = tempHtml + `
+                </div>
+
+            </div>
+            <hr class="m-0" />
+
+        `;
+        $("#commentContainer").append(tempHtml);
+    }
+
+    function editComment(commentId) {
+        if ($("#commentinput" + commentId + " input").val() == null) {
+            alert("내용을 입력해 주세요.");
+            return;
+        }
+        var data ={
+            "message": $("#commentinput" + commentId + " input").val()
+        };
+
+        $.ajax({
+            type: "PUT",
+            url: "/comment/"+commentId,
+            contentType: "application/json", // JSON 형식으로 전달함을 알리기
+            data: JSON.stringify(data),
+            success: function (response) {
+                if(response.status == "success"){
+                    alert('댓글이 성공적으로 수정되었습니다.');
+                    window.location.reload();
+                }else if (response.status == "fail") {
+                    alert(response.message);
+                }
+            },
+            error: function (response) {
+            }
+        });
+    }
+
+    function deleteComment(commentId) {
+        $.ajax({
+            type: "DELETE",
+            url: "/comment/"+commentId,
+            contentType: "application/json", // JSON 형식으로 전달함을 알리기
+            data: {},
+            success: function (response) {
+                if(response.status == "success"){
+                    alert('댓글이 성공적으로 삭제되었습니다.');
+                    window.location.reload();
+                }else if (response.status == "fail") {
+                    alert(response.message);
+                }
+            },
+            error: function (response) {
+            }
+        });
+    }
+</script>

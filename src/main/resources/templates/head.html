@@ -1,0 +1,57 @@
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>HangHae99 - Week03 Project</title>
+    <link rel="icon" type="image/x-icon" href="imgn.ico" />
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="/css/styles.css?ver=12341231" rel="stylesheet" />
+    <script>
+
+        // 메모 하나를 HTML로 만들어서 body 태그 내 원하는 곳에 붙입니다.
+        function addHTML(response) {
+            if (response['id'] == undefined) {
+                return;
+            }
+            var date = new Date(response['createdAt']);
+            var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1);
+            var day = date.getDay() < 10 ? "0" + date.getDay() : date.getDay();
+            var hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+            var minute = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+            let temp = `
+
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5 post ">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0 title">${response['title']}</h3>
+                            <div class="subheading mb-3 name">${response['username']}</div>
+                            <p class="message">${response['message']}</p>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <p class="time">${month}/${day} ${hour}:${minute}</p>
+                            <button class="btn btn-outline-primary text-uppercase mb-1" onclick="window.location='/detail/${response['id']}'" type="button" >Detail</button>
+
+                        </div>
+                    </div>
+
+                `
+            $("#post_container").append(temp);
+        }
+
+
+
+
+
+
+    </script>
+</head>
+<body id="page-top">
+<!-- Navigation-->
+<nav th:replace="nav.html"></nav>

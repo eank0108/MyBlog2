@@ -1,0 +1,61 @@
+
+<head th:replace="head.html"></head>
+        <!-- Page Content-->
+            <!-- About-->
+            <section class="resume-section" id="about">
+                <div class="resume-section-content">
+                    <h1 class="mb-0">
+                        HangHae99
+                        <span class="text-primary">Week03 Project</span>
+                    </h1>
+                    <div class="subheading mb-5">
+                        <a href="mailto:name@email.com">https://hanghae99.spartacodingclub.kr/</a>
+                    </div>
+                    <p class="lead mb-5">This is the project week 3 task blog. Based on the spring boot, we created a REST API with CRUD function and used MYSQL using Lombok and JPA.</p>
+
+                </div>
+            </section>
+            <hr class="m-0" />
+            <!-- Post-->
+            <section class="resume-section" id="post">
+
+                <div class="resume-section-content" id="post_container">
+
+                </div>
+            </section>
+
+
+
+        <div th:replace="modal1.html"></div>
+        <div th:replace="modal2.html"></div>
+        <div th:replace="modal3.html"></div>
+
+<script>
+
+    $(document).ready(function () {
+        // HTML 문서를 로드할 때마다 실행합니다.
+        getMessages();
+
+    })
+
+    // 메모를 불러와서 보여줍니다.
+    function getMessages() {
+        // 1. 기존 메모 내용을 지웁니다.
+        $("#post_container").html(`<h2 class="mb-5">Post</h2>`);
+        // 2. 메모 목록을 불러와서 HTML로 붙입니다.
+        $.ajax({
+            type: "GET",
+            url: "/posts",
+            contentType: "application/json", // JSON 형식으로 전달함을 알리기
+            data: {},
+            success: function (responses) {
+                for (let response of responses) {
+                    console.log(response)
+                    addHTML(response);
+                }
+            }
+        });
+    }
+</script>
+
+<div th:replace="bottom.html"></div>

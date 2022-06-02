@@ -1,0 +1,43 @@
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">수정하기</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body modify">
+                <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                    <div class="col-md-6 p-2">
+                        <div class="form-group mb-2">
+                            <!-- Email address input-->
+                            <input class="form-control w-100 p-3" id="title_m" type="text" data-sb-validations="required,title" data-sb-can-submit="no">
+                            <div class="invalid-feedback" data-sb-feedback="email:required">A title is required.</div>
+                            <div class="invalid-feedback" data-sb-feedback="email:email">Title is not valid.</div>
+                        </div>
+                        <div class="form-group mb-2">
+                            <!-- Name input-->
+                            <input class="form-control w-100 p-3" id="name_m" type="text"  data-sb-validations="required" data-sb-can-submit="no" readonly>
+                            <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
+                        </div>
+                        <div class="form-group mb-md-0">
+                            <!-- Phone number input-->
+                            <input class="form-control w-100 p-3" id="pw_m" type="password"  data-sb-validations="required" placeholder="비밀번호 입력" data-sb-can-submit="no">
+                            <div class="invalid-feedback" data-sb-feedback="pw:required">A password is required.</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 p-2">
+                        <div class="form-group form-group-textarea mb-md-0 h-100 ">
+                            <!-- Message input-->
+                            <textarea class="form-control w-100 h-100 p-3" id="message_m" placeholder="Your Message *" data-sb-validations="required" data-sb-can-submit="no"></textarea>
+                            <div class="invalid-feedback" data-sb-feedback="message:required">A message is required.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="editPost()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>

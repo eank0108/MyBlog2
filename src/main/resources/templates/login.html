@@ -1,0 +1,56 @@
+
+<head th:replace="head.html"></head>
+<!-- Page Content-->
+<!-- About-->
+
+<section class="resume-section" id="signin">
+    <form method="post" class="w-100" action="/signin">
+        <div class="resume-section-content">
+            <h2 class="mb-5 text-center">SignIn</h2>
+            <div class="d-flex flex-column flex-md-row justify-content-around mb-5">
+                <div class="col-md-6 p-2">
+                    <div class="form-group mb-2">
+                        <!-- Email address input-->
+                        <input class="form-control w-100 p-3" name = "username"id="username" type="text" placeholder="Id *" data-sb-validations="required,title" data-sb-can-submit="no">
+                        <div class="invalid-feedback" data-sb-feedback="email:required">A Id is required.</div>
+                        <div class="invalid-feedback" data-sb-feedback="email:email">Id is not valid.</div>
+                    </div>
+                    <div class="form-group mb-2">
+                        <!-- Name input-->
+                        <input class="form-control w-100 p-3" name ="password" id="password" type="text" placeholder="Your Password *" data-sb-validations="required" data-sb-can-submit="no">
+                        <div class="invalid-feedback" data-sb-feedback="name:required">A Password is required.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center"><button class="btn btn-primary btn-xl text-uppercase p-3 text-white m-3" type="button" onclick="singIn()">SignIn</button>
+                <button class="btn btn-primary btn-xl text-uppercase p-3 text-white" onclick="location.href='/signup'" type="button">SignUp</button></div>
+        </div>
+    </form>
+</section>
+<script>
+    function singIn() {
+        let data = { 'username': $("#username").val(), 'password': $("#password").val()};
+        $.ajax({
+            type: "POST",
+            url: "/signin",
+            contentType: "application/x-www-form-urlencoded", // JSON 형식으로 전달함을 알리기
+            data: data,
+            success: function (response) {
+                console.log(response)
+                if (response['status'] == "success") {
+                    alert("로그인 성공");
+                    window.location = "/";
+                }else if (response['status'] == "fail") {
+                    alert(response['message']);
+                }
+
+            }
+        });
+    }
+
+</script>
+
+
+
+
+<div th:replace="bottom.html"></div>

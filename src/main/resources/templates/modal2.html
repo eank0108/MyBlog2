@@ -1,0 +1,25 @@
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModal2Label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModal2Label">Post 삭제</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                    <div class="col-md p-2">
+                        <div class="form-group mb-md-0">
+                            <!-- Phone number input-->
+                            <input class="form-control w-100 p-3" id="pw_m2" type="password"  data-sb-validations="required" placeholder="비밀번호 입력" data-sb-can-submit="no">
+                            <div class="invalid-feedback" data-sb-feedback="pw:required">A password is required.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="deletePost()">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
