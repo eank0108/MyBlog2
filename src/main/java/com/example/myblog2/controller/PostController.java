@@ -5,14 +5,12 @@ import com.example.myblog2.dto.PostRequestDto;
 import com.example.myblog2.dto.PostsResponseDto;
 import com.example.myblog2.dto.StatusDto;
 import com.example.myblog2.model.Post;
-import com.example.myblog2.security.UserDetailsImlp;
+import com.example.myblog2.security.UserDetailsImpl;
 import com.example.myblog2.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,7 +26,7 @@ public class PostController {
     }
 
     @PostMapping("/post")
-    public StatusDto createPost(@RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImlp authUser) {
+    public StatusDto createPost(@RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl authUser) {
 
         if (authUser == null) {
             return new StatusDto("fail", "로그인 후 작성 가능.");
@@ -43,14 +41,14 @@ public class PostController {
     }
 
     @PutMapping("/post/{id}")
-    public StatusDto updatePost(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImlp authUser) {
+    public StatusDto updatePost(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl authUser) {
         if (authUser == null) {
             return new StatusDto("fail", "로그인 후 수정 가능.");
         }
         return postService.updatePost(id, postRequestDto, authUser);
     }
     @DeleteMapping("/post/{id}")
-    public StatusDto deletePost(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImlp authUser) {
+    public StatusDto deletePost(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl authUser) {
         if (authUser == null) {
             return new StatusDto("fail", "로그인 후 삭제 가능.");
         }
@@ -62,7 +60,7 @@ public class PostController {
 
     @PostMapping("/comment")
     // @Secured("USER")
-    public StatusDto createComment(@RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal UserDetailsImlp authUser) {
+    public StatusDto createComment(@RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal UserDetailsImpl authUser) {
         if (authUser == null) {
             return new StatusDto("fail", "로그인 후 작성 가능.");
         }
@@ -71,14 +69,14 @@ public class PostController {
     }
 
     @PutMapping("/comment/{id}")
-    public StatusDto updateComment(@PathVariable Long id, @RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal UserDetailsImlp authUser) {
+    public StatusDto updateComment(@PathVariable Long id, @RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal UserDetailsImpl authUser) {
         if (authUser == null) {
             return new StatusDto("fail", "로그인 후 수정 가능.");
         }
         return postService.updateComment(id, commentRequestDto, authUser);
     }
     @DeleteMapping("/comment/{id}")
-    public StatusDto deleteComment(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImlp authUser) {
+    public StatusDto deleteComment(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl authUser) {
         if (authUser == null) {
             return new StatusDto("fail", "로그인 후 삭제 가능.");
         }

@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Getter
-public class UserDetailsImlp  implements UserDetails {
+public class UserDetailsImpl implements UserDetails {
     private User user;
-    public UserDetailsImlp(User user) {
+    public UserDetailsImpl(User user) {
         this.user = user;
     }
 

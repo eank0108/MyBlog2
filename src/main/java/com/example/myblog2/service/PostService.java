@@ -5,7 +5,7 @@ import com.example.myblog2.model.Comment;
 import com.example.myblog2.model.Post;
 import com.example.myblog2.repository.CommentRepository;
 import com.example.myblog2.repository.PostRepository;
-import com.example.myblog2.security.UserDetailsImlp;
+import com.example.myblog2.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,7 +51,7 @@ public class PostService {
     }
 
     @Transactional
-    public StatusDto updatePost(Long id, PostRequestDto postRequestDto, UserDetailsImlp authUser) {
+    public StatusDto updatePost(Long id, PostRequestDto postRequestDto, UserDetailsImpl authUser) {
         Post post = postRepository.findById(id).orElseThrow(() -> new NullPointerException("해당 글이 존재하지 않습니다."));
         if (postRequestDto.getMessage().equals("")) {
             return new StatusDto("fail", "생성 실패. 내용을 입력하세요.");
@@ -68,7 +68,7 @@ public class PostService {
         return new StatusDto("success", "수정 성공");
     }
 
-    public StatusDto deletePost(Long id, UserDetailsImlp authUser) {
+    public StatusDto deletePost(Long id, UserDetailsImpl authUser) {
         Post post = postRepository.findById(id).orElseThrow(() -> new NullPointerException("해당 글이 존재하지 않습니다."));
 
         if (!post.getUser().getId().equals(authUser.getUser().getId())) {
@@ -95,7 +95,7 @@ public class PostService {
     }
 
     @Transactional
-    public StatusDto updateComment(Long id, CommentRequestDto commentRequestDto, UserDetailsImlp authUser) {
+    public StatusDto updateComment(Long id, CommentRequestDto commentRequestDto, UserDetailsImpl authUser) {
         Comment comment = commentRepository.findById(id).orElseThrow(() -> new NullPointerException("해당 글이 존재하지 않습니다."));
 
         if (!comment.getUser().getId().equals(authUser.getUser().getId())) {
@@ -109,7 +109,7 @@ public class PostService {
         return new StatusDto("success", "수정 성공");
     }
 
-    public StatusDto deleteComment(Long id, UserDetailsImlp authUser) {
+    public StatusDto deleteComment(Long id, UserDetailsImpl authUser) {
         Comment comment = commentRepository.findById(id).orElseThrow(() -> new NullPointerException("해당 글이 존재하지 않습니다."));
 
         if (!comment.getUser().getId().equals(authUser.getUser().getId())) {

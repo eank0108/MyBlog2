@@ -22,10 +22,10 @@ public class Post extends Timestamped {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = false)
     private String title;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = false)
     private String message;
 
     @OneToMany

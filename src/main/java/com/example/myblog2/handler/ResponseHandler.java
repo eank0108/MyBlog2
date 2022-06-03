@@ -18,19 +18,23 @@ public class ResponseHandler {
     private ServletResponse response;
     private StatusDto statusDto;
 
-    public ResponseHandler(ServletResponse response, StatusDto statusDto) throws IOException {
+    public ResponseHandler(ServletResponse response, StatusDto statusDto) {
         this.response = response;
         this.statusDto = statusDto;
         this.responseFlush();
     }
 
-    public void responseFlush() throws IOException {
+    public void responseFlush() {
         response.setContentType("application/json");
-        PrintWriter out = response.getWriter();
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.getFactory().configure(JsonWriteFeature.ESCAPE_NON_ASCII.mappedFeature(), true);
-        out.print(mapper.writeValueAsString(statusDto));
-        // ((HttpServletResponse) response).sendRedirect("/");
-        out.flush();
+        try {
+            PrintWriter out = response.getWriter();
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.getFactory().configure(JsonWriteFeature.ESCAPE_NON_ASCII.mappedFeature(), true);
+            out.print(mapper.writeValueAsString(statusDto));
+            // ((HttpServletResponse) response).sendRedirect("/");
+            out.flush();
+        } catch (IOException e) {
+            System.out.println("Response Error");
+        }
     }
 }

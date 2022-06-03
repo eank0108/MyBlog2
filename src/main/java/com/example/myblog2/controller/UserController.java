@@ -2,7 +2,7 @@ package com.example.myblog2.controller;
 
 import com.example.myblog2.dto.StatusDto;
 import com.example.myblog2.dto.UserRequestDto;
-import com.example.myblog2.security.UserDetailsImlp;
+import com.example.myblog2.security.UserDetailsImpl;
 import com.example.myblog2.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,7 +19,7 @@ public class UserController {
 
     @PostMapping("/signup")
     @ResponseBody
-    public StatusDto signup(@RequestBody UserRequestDto userRequestDto, @AuthenticationPrincipal UserDetailsImlp authUser) {
+    public StatusDto signup(@RequestBody UserRequestDto userRequestDto, @AuthenticationPrincipal UserDetailsImpl authUser) {
         System.out.println(authUser);
         if (authUser != null) {
             return new StatusDto("fail", "이미 로그인 되어 있습니다.");
@@ -43,7 +43,7 @@ public class UserController {
 
     @GetMapping("/userinfo")
     @ResponseBody
-    public UserDetailsImlp userInfo( @AuthenticationPrincipal UserDetailsImlp authUser) {
+    public UserDetailsImpl userInfo(@AuthenticationPrincipal UserDetailsImpl authUser) {
         System.out.println(authUser);
 
         return authUser;
